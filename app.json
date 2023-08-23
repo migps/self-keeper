@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "self-keeper",
+    "slug": "self-keeper",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
