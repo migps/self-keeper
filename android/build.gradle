@@ -37,4 +37,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://www.jitpack.io' }
     }
+project.ext.react = [
+ enableHermes: true,  // clean and rebuild if changing
+]
 }

@@ -77,4 +77,8 @@ public class MainApplication extends Application implements ReactApplication {
     super.onConfigurationChanged(newConfig);
     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
+  @Override
+    protected JSIModulePackage getJSIModulePackage() {
+      return new ReanimatedJSIModulePackage(); // <- add
+    }
 }
