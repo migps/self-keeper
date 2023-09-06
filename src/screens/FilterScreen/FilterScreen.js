@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, Text, Switch, StyleSheet, FlatList, Alert, Button } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import * as Notifications from "expo-notifications";
 import { WebView } from 'react-native-webview'; // Import the WebView component
 
 // Import your filters data
@@ -9,26 +8,7 @@ import filters from "./filters.js";
 
 export default function FilterScreen() {
     const [filterStates, setFilterStates] = useState({});
-    const [screenReaderPermissionGranted, setScreenReaderPermissionGranted] =
-        useState(false);
     const [webViewUrl, setWebViewUrl] = useState(null); // State to hold WebView URL
-
-    useEffect(() => {
-        // Request screen reader permission
-        const requestScreenReaderPermission = async () => {
-            const { status } = await Notifications.requestPermissionsAsync();
-            if (status === "granted") {
-                setScreenReaderPermissionGranted(true);
-            } else {
-                Alert.alert(
-                    "Permiso revocado",
-                    "Favor de autorizar en opciones."
-                );
-            }
-        };
-
-        requestScreenReaderPermission();
-    }, []);
 
     const toggleFilter = (filterId, filterName) => {
         setFilterStates((prevState) => ({
@@ -49,17 +29,7 @@ export default function FilterScreen() {
 
     // Function to send a push notification
     const sendPushNotification = async (filterName) => {
-        const message = {
-            to: 'YOUR_PUSH_TOKEN', // Replace with your recipient's Expo Push Token
-            sound: 'default',
-            title: 'Filtro activado',
-            body: `${filterName} se ha activado. Contenido relacionado a ese tópico se ocultará!`,
-        };
-
-        await Notifications.scheduleNotificationAsync({
-            content: message,
-            trigger: null,
-        });
+        // Implement push notification logic here, if needed
     };
 
     const openFacebookWebView = () => {
@@ -88,12 +58,10 @@ export default function FilterScreen() {
                     renderItem={({ item }) => (
                         <View style={styles.filterContainer}>
                             <Text style={styles.filterText}>{item.name}</Text>
-                            {screenReaderPermissionGranted && (
-                                <Switch
-                                    value={filterStates[item.id] || false}
-                                    onValueChange={() => toggleFilter(item.id, item.name)}
-                                />
-                            )}
+                            <Switch
+                                value={filterStates[item.id] || false}
+                                onValueChange={() => toggleFilter(item.id, item.name)}
+                            />
                         </View>
                     )}
                     keyExtractor={(filter) => filter.id.toString()}
